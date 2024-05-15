@@ -22,6 +22,16 @@ namespace RecipeForum.Controllers
         {
             return View();
         }
+        public IActionResult RecipeCreation()
+        {
+            return View();
+        }
+
+        public IActionResult RecipeList() 
+        {
+            //List<Recipe> list = getfromd;
+            return View(list);
+        } 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
