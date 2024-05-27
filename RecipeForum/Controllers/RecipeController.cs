@@ -10,7 +10,7 @@ namespace RecipeForum.Controllers
         public IActionResult RecipeList()
         {
             //List<Recipe> list = getfromd;
-            return View(IList);
+            return View();
         }
         public IActionResult RecipeCreation()
         {
