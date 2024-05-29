@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 namespace RecipeForum.Models
 {
     public class Recipe
@@ -11,7 +10,7 @@ namespace RecipeForum.Models
         public string Name { get; set; }
 
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         [Required]
         public User? User { get; set; }
 

@@ -1,16 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace RecipeForum.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
-
-        [Required, MaxLength(25)]
-        public string Username { get; set; }
-
-        public int CommentId { get; set; }
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public ICollection<Recipe> Recipes => new List<Recipe>();
 
     }
