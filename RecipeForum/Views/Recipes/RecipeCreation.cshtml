@@ -1,46 +1,51 @@
-﻿
+﻿@using RecipeForum.ViewModels
+@model CreateRecipeViewModel
 @{
-    ViewData["Title"] = "RecipeCreation";
+    ViewData["Title"] = "Recipe Creation";
 }
-<header><h1>Recipe Creation</h1></header>
-<body>
-  
-    <form>
+<header><h1>Recipe Creation</h1>
+    <h2>Create ingredients first!</h2></header>
+    <form asp-controller="Recipes" asp-action="CreateRecipe">
+        <div asp-validation-summary="ModelOnly" class="text-danger">
+
+        </div>
         <label for="recipeName">Name</label>
-        <input type="text"  id="recipeName"/>
+    <input asp-for="Name"  type="text" id="recipeName" />
+        <span asp-validation-for="Name" class="text-danger"></span>
         <br />
-
-        <input type="checkbox" id="breakfast" value="Breakfast" />
-        <label for="breakfast">Breakfast</label>
-        <br />
-
-        <input type="checkbox" id="lunch" value="Lunch" />
-        <label for="lunch">Lunch</label>
-        <br />
-
-        <input type="checkbox" id="dinner" value="Dinner" />
-        <label for="dinner">Dinner</label>
-        <br />
+        
+        <select asp-for="Category" id="category">
+            <option value="Breakfast">Breakfast</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
+        </select>
+        <br/>
 
         <label for="prepTime">Prep Time</label>
-        <input type="number" id="prepTime"/>
+        <input asp-for="PrepTime" type="number" id="prepTime"/>
+    <span asp-validation-for="PrepTime" class="text-danger"></span>
         <br />
 
        <label for="cookingTime">Cooking Time</label>
-        <input type="number" id="cookingTime" />
+    <input asp-for="CookingTime" type="number" id="cookingTime" />
+    <span asp-validation-for="CookingTime" class="text-danger"></span>
         <br />
 
-        <label for="ingredients">Ingredient List</label>
-        <input type="text" id="ingredients" />
+    <label for="ingredients">List ingredients:</label>
+    <input asp-for="Ingredients" type="text" id="ingredients" />
+    <span asp-validation-for="Ingredients" class="text-danger"></span>
         <br />
 
         <label for="description">Instructions</label>
-        <input type="text" id="description" />
+    <input asp-for="Description"  type="text" id="description" />
+    <span asp-validation-for="Description" class="text-danger"></span>
         <br />
 
         <input type="submit" value="Submit"/>
     </form>
-    
-</body>
+    @section Scripts{
+       <partial name="_ValidationScriptsPartial" />
+    }
+
 
 

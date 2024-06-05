@@ -8,7 +8,7 @@ using RecipeForum.Data;
 
 #nullable disable
 
-namespace RecipeForum.Data.Migrations
+namespace RecipeForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -184,33 +184,7 @@ namespace RecipeForum.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("RecipeForum.Models.Ingredient", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("CaloriesPer100g")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("Ingredients");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("RecipeForum.Models.Recipe", b =>
@@ -229,7 +203,13 @@ namespace RecipeForum.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Ingredients")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("nvarchar(80)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -240,14 +220,31 @@ namespace RecipeForum.Data.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Recipes");
+                    b.ToTable("Recipes", (string)null);
+                });
+
+            modelBuilder.Entity("RecipeForum.Models.Upvote", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RecipeId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("Upvotes", (string)null);
                 });
 
             modelBuilder.Entity("RecipeForum.Models.User", b =>
@@ -385,24 +382,30 @@ namespace RecipeForum.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("RecipeForum.Models.Ingredient", b =>
-                {
-                    b.HasOne("RecipeForum.Models.Recipe", "Recipe")
-                        .WithMany("Ingredients")
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Recipe");
-                });
-
             modelBuilder.Entity("RecipeForum.Models.Recipe", b =>
                 {
                     b.HasOne("RecipeForum.Models.User", "User")
                         .WithMany("Recipes")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("RecipeForum.Models.Upvote", b =>
+                {
+                    b.HasOne("RecipeForum.Models.Recipe", "Recipe")
+                        .WithMany("Upvotes")
+                        .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("RecipeForum.Models.User", "User")
+                        .WithMany("Upvotes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Recipe");
 
                     b.Navigation("User");
                 });
@@ -411,7 +414,7 @@ namespace RecipeForum.Data.Migrations
                 {
                     b.Navigation("Comments");
 
-                    b.Navigation("Ingredients");
+                    b.Navigation("Upvotes");
                 });
 
             modelBuilder.Entity("RecipeForum.Models.User", b =>
@@ -419,6 +422,8 @@ namespace RecipeForum.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Recipes");
+
+                    b.Navigation("Upvotes");
                 });
 #pragma warning restore 612, 618
         }

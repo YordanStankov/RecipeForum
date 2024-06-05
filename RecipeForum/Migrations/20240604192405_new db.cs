@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace RecipeForum.Data.Migrations
+namespace RecipeForum.Migrations
 {
     /// <inheritdoc />
-    public partial class mexican : Migration
+    public partial class newdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
