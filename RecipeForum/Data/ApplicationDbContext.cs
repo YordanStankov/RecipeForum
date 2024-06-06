@@ -14,7 +14,7 @@ namespace RecipeForum.Data
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Upvote> Upvotes { get; set;}
-      
+        public override DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
