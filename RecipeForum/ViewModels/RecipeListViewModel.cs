@@ -13,6 +13,8 @@ namespace RecipeForum.ViewModels
         public double PrepTime { get; set; }
         [Required]
         public double CookingTime { get; set; }
+        [Required]
+        public Category Category { get; set; }
              
     }
 }

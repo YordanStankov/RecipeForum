@@ -16,18 +16,6 @@ namespace RecipeForum.Controllers
         {
             _context = context;
         }
-        public IActionResult RecipeList()
-        {
-            var recipes = _context.Recipes.Select(n => new RecipeListViewModel()
-            {
-                Id = n.Id,
-                Name = n.Name,
-                CookingTime = n.CookingTime,
-                PrepTime = n.PrepTime,
-            }).ToList();
-
-            return View(recipes);
-        }
         public async Task<IActionResult> FocusRecipe(int id)
         {
             var curRecipe = await _context.Recipes.
