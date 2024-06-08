@@ -16,10 +16,9 @@ namespace RecipeForum.Controllers
         {
             _context = context;
         }
-
         public IActionResult BreakfastRecipeList()
         {
-            var recipes = _context.Recipes.Where(n => n.Category == 0).Select(n => new RecipeListViewModel()
+            var recipes =  _context.Recipes.Where(n => n.Category == 0).Select(n => new RecipeListViewModel()
             {
                 Id = n.Id,
                 Name = n.Name,

@@ -3,9 +3,40 @@
 @{
     ViewBag.Title = "Focus Recipe";
 }
-<div class="card">
-    <h2>@Model.Name</h2>
-    <h2>@Model.PrepTime</h2>
-    <h2>@Model.CookingTime</h2>
+<center>
+    <h2>Recipe</h2>
+    <hr />
+    <div class="card">
+        <h3>@Model.Name</h3>
+        <h3>Prep time: @Model.PrepTime min.</h3>
+        <h3>Cooking time: @Model.CookingTime min.</h3>
+        <h3>@Model.Category option</h3>
+        <h4>Ingredients: @Model.Ingredients</h4>
+        <h4>Instructions: @Model.Description</h4>
+        </div>
+</center>
 
-</divw>
+@{
+   await Html.RenderPartialAsync("_CreateComment", new RecipeForum.ViewModels.CreateCommentViewModel
+    {
+        RecipeId = Model.Id
+    });
+}
+
+<div id="commentSection">
+    @if(Model.Comments == null)
+    {
+        <h2>No comments yet!</h2>
+    }
+
+    else
+    {
+        @foreach (var comment in Model.Comments)
+        {
+            <h2>@comment.UserId</h2>
+            <h2>@comment.Description</h2>
+        }
+    }
+</div>
+  
+

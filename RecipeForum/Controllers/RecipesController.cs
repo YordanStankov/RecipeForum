@@ -6,16 +6,22 @@ using RecipeForum.ViewModels;
 using RecipeForum.Data;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
+using Microsoft.AspNetCore.Identity;
 
 namespace RecipeForum.Controllers
 {
     public class RecipesController : Controller
     {
         private ApplicationDbContext _context;
-        public RecipesController(ApplicationDbContext context)
+        private UserManager<User> _userManager;
+
+        public RecipesController(ApplicationDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+        
         public async Task<IActionResult> FocusRecipe(int id)
         {
             var curRecipe = await _context.Recipes.
@@ -28,13 +34,19 @@ namespace RecipeForum.Controllers
             }
             var focusRecipe = new FocusRecipeViewModel
             {
-                Id = curRecipe.Id,  
+                Id = curRecipe.Id,
                 Name = curRecipe.Name,
                 CookingTime = curRecipe.CookingTime,
                 PrepTime = curRecipe.PrepTime,
                 Ingredients = curRecipe.Ingredients,
                 Description = curRecipe.Description,
                 Category = curRecipe.Category,
+                Comments = curRecipe.Comments.Select(c => new CommentViewModel()
+                {
+                    UserId = c.UserId,
+                    RecipeId = c.RecipeId,
+                    Description = c.Description
+                }).ToList()
             };
             return View(focusRecipe);
         }
@@ -58,5 +70,18 @@ namespace RecipeForum.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index", "Home"); 
         }
+       public IActionResult CreateComment(CreateCommentViewModel Comment)
+        {
+            Comment commentFloat = new Comment()
+            {
+                UserId = _userManager.GetUserId(User),
+                RecipeId = Comment.RecipeId,
+                Description = Comment.Description,
+            };
+            _context.Add(commentFloat);
+            _context.SaveChanges();
+            return RedirectToAction("FocusRecipe", "Recipes", new {Id = commentFloat.RecipeId});
+        }
+       
     }
 }

@@ -19,7 +19,7 @@ namespace RecipeForum.ViewModels
         public double CookingTime { get; set; }
         [Required]
         public string Description { get; set; }
-        public ICollection<Comment>? Comments { get; set; }
+        public ICollection<CommentViewModel>? Comments { get; set; }
         public ICollection<Upvote>? Upvotes { get; set; }
     }
 }

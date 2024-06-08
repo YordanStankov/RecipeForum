@@ -1,0 +1,13 @@
+﻿@using RecipeForum.ViewModels
+@model CreateCommentViewModel
+@{
+    ViewBag.Title = "Create Comment";
+}
+<form id="commentCreation" asp-controller="Recipes" asp-action="CreateComment">
+    <label for="Description">Comment: </label>
+    <input asp-for="Description" type="text" id="commentDescription" />
+    <span asp-validation-for="Description" class="text-danger"></span>
+    <br />
+   <input hidden asp-for="RecipeId"/>
+    <input type="submit" value="Submit" />
+</form>

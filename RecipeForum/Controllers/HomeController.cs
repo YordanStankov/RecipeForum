@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using RecipeForum.Models;
 using System.Diagnostics;
+using RecipeForum.ViewModels;
+using RecipeForum.Data;
 
 namespace RecipeForum.Controllers
 {
     public class HomeController : Controller
     {
+       
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -13,7 +16,7 @@ namespace RecipeForum.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(CommentViewModel commentView)
         {
             return View();
         }
@@ -26,8 +29,8 @@ namespace RecipeForum.Controllers
         {
             return View();
         }
-      
 
+       
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
