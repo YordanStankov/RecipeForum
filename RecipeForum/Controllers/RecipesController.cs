@@ -41,6 +41,7 @@ namespace RecipeForum.Controllers
                 Ingredients = curRecipe.Ingredients,
                 Description = curRecipe.Description,
                 Category = curRecipe.Category,
+                Upvotes = curRecipe.Upvotes,
                 Comments = curRecipe.Comments.Select(c => new CommentViewModel()
                 {
                     UserId = c.UserId,
@@ -92,5 +93,34 @@ namespace RecipeForum.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
+        public IActionResult Rating(int amount, int recipeId)
+        {
+            var Rating = _context.Upvotes.FirstOrDefault(r => r.RecipeId == recipeId && r.UserId == _userManager.GetUserId(User));
+            if(Rating is not null)
+            {
+                if(Rating.Amount ==  amount)
+                {
+                    Rating.Amount -= amount;
+                }
+                else
+                {
+                    Rating.Amount = amount;
+                }
+                _context.Update(Rating);
+                _context.SaveChanges();
+                return RedirectToAction("FocusRecipe", "Recipes", new { Id = Rating.RecipeId });
+            }
+            Rating = new Upvote
+            {
+                UserId = _userManager.GetUserId(User),
+                Amount = amount,
+                RecipeId = recipeId
+            };
+            _context.Add(Rating);
+            _context.SaveChanges();
+            return RedirectToAction("FocusRecipe", "Recipes", new { Id = Rating.RecipeId });
+        }  
+      
     }
+  
 }

@@ -1,0 +1,25 @@
+﻿@using RecipeForum.ViewModels
+@model AccountScreenViewModel
+@{
+    ViewData["Title"] = "AccountScreen";
+}
+
+<h1>AccountScreen</h1>
+<h2>@Model.UserId</h2>
+<ul>
+@foreach(var recipe in Model.Recipes)
+{
+    <li>
+    <div class="card .bg-light col-5 ml-3 m-1">
+        <blockquote>
+            <p>Name: @recipe.Name</p>
+            <p>Cooking time: @recipe.PrepTime min.</p>
+            <p>Prep time: @recipe.CookingTime min.</p>
+            <p>Category: @recipe.Category</p>
+            <a href="@Url.Action("FocusRecipe", "Recipes", new {id = recipe.Id})" class="btn btn-primary">See more</a>
+        </blockquote>
+    </div>
+        </li>
+}
+</ul>
+

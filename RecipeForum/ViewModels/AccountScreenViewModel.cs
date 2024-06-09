@@ -7,9 +7,8 @@ namespace RecipeForum.ViewModels
         public string UserId { get; set; }
 
         //for display at profile screen
-        public string UserName { get; set; }
+       
         public ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
-        public ICollection<Upvote> Upvotes { get; set; } = new List<Upvote>();
 
     }
 }

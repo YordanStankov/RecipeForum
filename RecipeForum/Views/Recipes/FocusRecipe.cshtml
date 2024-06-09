@@ -40,5 +40,18 @@
         }
     }
 </div>
+<div id="likeButton">
+    <form asp-controller="Recipes" asp-action="Rating">
+        <input type="submit" value="Upvote"/>
+        <input hidden value="@Model.Id" name="recipeId"/>
+        <input hidden value="1" name="amount"/>
+    </form>
+    <h1>@Model.Upvotes.Sum(x => x.Amount)</h1>
+    <form asp-controller="Recipes" asp-action="Rating">
+        <input type="submit" value="Downvote" />
+        <input hidden value="@Model.Id" name="recipeId"/>
+        <input hidden value="-1" name="amount"/>
+    </form>
+</div>
   
 
