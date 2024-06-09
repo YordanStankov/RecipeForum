@@ -82,6 +82,15 @@ namespace RecipeForum.Controllers
             _context.SaveChanges();
             return RedirectToAction("FocusRecipe", "Recipes", new {Id = commentFloat.RecipeId});
         }
-       
+       public IActionResult DeleteRecipe(int DeleteId)
+        {
+            var Recipe = _context.Recipes.FirstOrDefault(r => r.Id == DeleteId);
+            if(Recipe is not null)
+            {
+                _context.Recipes.Remove(Recipe);
+            }
+            _context.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

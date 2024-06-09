@@ -16,13 +16,15 @@
         </div>
 </center>
 
+    <h3>Comment section</h3>
+<hr />
 @{
-   await Html.RenderPartialAsync("_CreateComment", new RecipeForum.ViewModels.CreateCommentViewModel
-    {
-        RecipeId = Model.Id
-    });
+    await Html.RenderPartialAsync("_CreateComment", new RecipeForum.ViewModels.CreateCommentViewModel
+            {
+                RecipeId = Model.Id
+            });
 }
-
+<br />
 <div id="commentSection">
     @if(Model.Comments == null)
     {
@@ -33,8 +35,8 @@
     {
         @foreach (var comment in Model.Comments)
         {
-            <h2>@comment.UserId</h2>
-            <h2>@comment.Description</h2>
+            <h2 class="UserName fs-5">@comment.UserId : @comment.Description</h2>
+            
         }
     }
 </div>

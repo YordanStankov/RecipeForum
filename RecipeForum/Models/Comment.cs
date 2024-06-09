@@ -7,17 +7,15 @@ namespace RecipeForum.Models
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        
         public string? UserId { get; set; }
-        [Required]
+       
         public User? User { get; set; }
 
         [Required]
         public string? Description { get; set; }
 
-        [Required]
-        public int RecipeId { get; set; }
-        [Required]
+        public int? RecipeId { get; set; }
         public Recipe? Recipe { get; set; }
 
     }
