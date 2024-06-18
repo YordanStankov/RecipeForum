@@ -51,6 +51,7 @@ namespace RecipeForum.Controllers
             };
             return View(focusRecipe);
         }
+        
         public IActionResult RecipeCreation()
         {
             return View();
@@ -71,6 +72,32 @@ namespace RecipeForum.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index", "Home"); 
         }
+
+
+        public async Task<IActionResult> AccountScreen()
+        {
+            var currUser = await _context.Users.Include(r => r.Recipes).FirstOrDefaultAsync(p => p.Id == _userManager.GetUserId(User)); 
+            if (currUser == null)
+            {
+                return NotFound();
+            }
+            var bigUser = new AccountScreenViewModel
+            {
+                UserId = _userManager.GetUserName(User),
+                Recipes = (ICollection<RecipeListViewModel>)currUser.Recipes.Select(n => new RecipeListViewModel
+                {
+                    Id = n.Id,
+                    Name = n.Name,
+                    CookingTime = n.CookingTime,
+                    PrepTime = n.PrepTime,
+                    Category = n.Category,
+                }).ToList()
+            }; 
+
+            return View(bigUser); 
+        }
+
+
        public IActionResult CreateComment(CreateCommentViewModel Comment)
         {
             Comment commentFloat = new Comment()
@@ -83,7 +110,9 @@ namespace RecipeForum.Controllers
             _context.SaveChanges();
             return RedirectToAction("FocusRecipe", "Recipes", new {Id = commentFloat.RecipeId});
         }
-       public IActionResult DeleteRecipe(int DeleteId)
+
+
+        public IActionResult DeleteRecipe(int DeleteId)
         {
             var Recipe = _context.Recipes.FirstOrDefault(r => r.Id == DeleteId);
             if(Recipe is not null)
@@ -120,7 +149,6 @@ namespace RecipeForum.Controllers
             _context.SaveChanges();
             return RedirectToAction("FocusRecipe", "Recipes", new { Id = Rating.RecipeId });
         }  
-      
     }
   
 }

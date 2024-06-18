@@ -7,6 +7,7 @@
     <h2>Recipe</h2>
     <hr />
     <div class="card">
+        <h3>@Model.UserId</h3>
         <h3>@Model.Name</h3>
         <h3>Prep time: @Model.PrepTime min.</h3>
         <h3>Cooking time: @Model.CookingTime min.</h3>
@@ -16,8 +17,11 @@
         </div>
 </center>
 
+<a href="@Url.Action("DeleteRecipe", "Recipes", new {DeleteId = Model.Id})" class="btn btn-primary">Delete</a>
+
     <h3>Comment section</h3>
 <hr />
+
 @{
     await Html.RenderPartialAsync("_CreateComment", new RecipeForum.ViewModels.CreateCommentViewModel
             {

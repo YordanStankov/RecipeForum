@@ -19,7 +19,6 @@
                     <p>Prep time: @recipe.CookingTime min.</p>
                     <p>Category: @recipe.Category</p>
                     <a href="@Url.Action("FocusRecipe", "Recipes", new {id = recipe.Id})" class="btn btn-primary">See more</a>
-                    <a href="@Url.Action("DeleteRecipe", "Recipes", new {DeleteId = recipe.Id})" class="btn btn-primary">Delete</a>
                 </blockquote>
             </div>
         }

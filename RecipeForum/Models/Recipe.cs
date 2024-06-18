@@ -25,7 +25,7 @@ namespace RecipeForum.Models
         [Required, MaxLength(500)]
         public string Description { get; set; }
 
-        public ICollection<Comment>? Comments { get; set; }
-        public ICollection<Upvote>? Upvotes { get; set; }
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+        public ICollection<Upvote> Upvotes { get; set; } = new List<Upvote>();  
     }
 }
