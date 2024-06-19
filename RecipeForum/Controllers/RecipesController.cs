@@ -22,6 +22,8 @@ namespace RecipeForum.Controllers
             _userManager = userManager;
         }
         
+
+
         public async Task<IActionResult> FocusRecipe(int id)
         {
             var curRecipe = await _context.Recipes.
@@ -52,10 +54,15 @@ namespace RecipeForum.Controllers
             return View(focusRecipe);
         }
         
+
+
         public IActionResult RecipeCreation()
         {
             return View();
         }
+
+
+
         [HttpPost]
         public IActionResult CreateRecipe(CreateRecipeViewModel Recipe)
         {
@@ -70,7 +77,7 @@ namespace RecipeForum.Controllers
             };
             _context.Add(RecipeFloat);
             _context.SaveChanges();
-            return RedirectToAction("Index", "Home"); 
+            return RedirectToAction("GreatSucces", "Home"); 
         }
 
 
@@ -79,7 +86,7 @@ namespace RecipeForum.Controllers
             var currUser = await _context.Users.Include(r => r.Recipes).FirstOrDefaultAsync(p => p.Id == _userManager.GetUserId(User)); 
             if (currUser == null)
             {
-                return NotFound();
+                return RedirectToAction("MakeAnAccount", "Home");
             }
             var bigUser = new AccountScreenViewModel
             {
@@ -98,6 +105,7 @@ namespace RecipeForum.Controllers
         }
 
 
+
        public IActionResult CreateComment(CreateCommentViewModel Comment)
         {
             Comment commentFloat = new Comment()
@@ -112,16 +120,29 @@ namespace RecipeForum.Controllers
         }
 
 
+
         public IActionResult DeleteRecipe(int DeleteId)
         {
-            var Recipe = _context.Recipes.FirstOrDefault(r => r.Id == DeleteId);
-            if(Recipe is not null)
+            var currRecipe = _context.Recipes.Include(r => r.Comments).FirstOrDefault(r => r.Id == DeleteId);
+            if (currRecipe.UserId != _userManager.GetUserId(User))
             {
-                _context.Recipes.Remove(Recipe);
+                return RedirectToAction("NoBueno", "Home");
+            }
+            if(currRecipe.UserId == _userManager.GetUserId(User))
+            {
+                if (currRecipe is not null)
+                {
+                    foreach(var comment in currRecipe.Comments)
+                    {
+                        _context.Comments.Remove(comment);
+                    }
+                    _context.Recipes.Remove(currRecipe);
+                }
             }
             _context.SaveChanges();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Destroyed", "Home");
         }
+        
         public IActionResult Rating(int amount, int recipeId)
         {
             var Rating = _context.Upvotes.FirstOrDefault(r => r.RecipeId == recipeId && r.UserId == _userManager.GetUserId(User));

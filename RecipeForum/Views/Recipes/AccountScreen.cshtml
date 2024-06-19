@@ -4,10 +4,13 @@
     ViewData["Title"] = "AccountScreen";
 }
 
-<h1>AccountScreen</h1>
-<h2>@Model.UserId</h2>
+<h1>Account details</h1>
+<hr />
+<h2>Gmail: @Model.UserId</h2>
+<hr />
 <ul>
-@foreach(var recipe in Model.Recipes)
+   
+    @foreach(var recipe in Model.Recipes)
 {
     <li>
     <div class="card .bg-light col-5 ml-3 m-1">
